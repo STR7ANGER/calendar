@@ -35,7 +35,11 @@ const normalizeEvent = (raw: unknown): CalendarEvent | null => {
   return { id, title, description, color, startDate: normalizedStart, endDate: normalizedEnd };
 };
 
-const Calendar = () => {
+interface CalendarProps {
+  onMonthChange?: (monthIndex: number) => void;
+}
+
+const Calendar = ({ onMonthChange }: CalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>(() => {
     if (typeof window === "undefined") return [];
@@ -54,10 +58,17 @@ const Calendar = () => {
   const [showEventBox, setShowEventBox] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
+  const monthIndex = currentDate.getMonth();
+
   const monthTheme = useMemo(
-    () => MONTH_DATA[currentDate.getMonth()].theme,
-    [currentDate],
+    () => MONTH_DATA[monthIndex].theme,
+    [monthIndex],
   );
+
+  // Notify parent when month changes
+  useEffect(() => {
+    onMonthChange?.(monthIndex);
+  }, [monthIndex, onMonthChange]);
 
   // Save events to localStorage whenever they change
   useEffect(() => {

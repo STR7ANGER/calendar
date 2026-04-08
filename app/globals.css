@@ -146,25 +146,48 @@
   overflow: hidden;
 }
 
-.page-container::before {
-  content: "";
+/* Blurred month background image */
+.page-bg-blur {
+  position: fixed;
+  inset: -40px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page-bg-blur__img {
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  object-fit: cover;
+  filter: blur(50px) saturate(1.3);
+  -webkit-filter: blur(50px) saturate(1.3);
+  transform: scale(1.1);
+  animation: bgFadeIn 0.8s ease both;
+}
+
+.page-bg-blur__overlay {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, var(--m-light-bg, rgba(99, 102, 241, 0.05)) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, var(--m-light-bg, rgba(99, 102, 241, 0.05)) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, var(--m-light-bg, rgba(99, 102, 241, 0.05)) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+  background: rgba(255, 255, 255, 0.72);
   transition: background 0.5s ease;
 }
 
-.dark .page-container::before {
-  background:
-    radial-gradient(ellipse at 20% 50%, var(--m-dark-bg, rgba(99, 102, 241, 0.08)) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, var(--m-dark-bg, rgba(99, 102, 241, 0.08)) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, var(--m-dark-bg, rgba(99, 102, 241, 0.08)) 0%, transparent 50%);
+.dark .page-bg-blur__overlay {
+  background: rgba(10, 10, 15, 0.78);
 }
+
+@keyframes bgFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+
+
 
 .page-header {
   position: absolute;
